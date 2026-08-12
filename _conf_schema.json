@@ -1,0 +1,14 @@
+{
+  "download_dir": {
+    "description": "下载目录。留空则使用默认目录 data/plugin_data/astrbot_plugin_download_middleman/DownloadFiles/",
+    "hint": "填写绝对路径，或相对插件数据目录的相对路径。",
+    "type": "string",
+    "default": ""
+  },
+  "download_url_prefix": {
+    "description": "文件下载网址前缀，用于拼接大文件（≥50MB）的国内下载地址，例如 http://example.com/downloads",
+    "hint": "留空时，大文件将通过 Onebot 直接发送给用户。",
+    "type": "string",
+    "default": ""
+  }
+}
