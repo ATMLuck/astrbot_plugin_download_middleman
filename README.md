@@ -69,6 +69,17 @@ AstrBot 与 OneBot 协议端（NapCat、Lagrange 等）位于不同机器/容器
 
 ## 安装
 
+**方式一：通过 GitHub 克隆（推荐）**
+
+```bash
+cd AstrBot/data/plugins
+git clone https://github.com/ATMLuck/astrbot_plugin_download_middleman.git
+```
+
+也可以直接在 AstrBot WebUI 的插件管理中使用「从 Git 安装」功能，粘贴仓库地址 `https://github.com/ATMLuck/astrbot_plugin_download_middleman.git` 安装。安装后在 WebUI 插件管理中启用并重载插件。
+
+**方式二：手动复制**
+
 将本目录内容复制到 `AstrBot/data/plugins/<插件名>/`，在 WebUI 插件管理中启用并重载插件。
 
 依赖：`curl`、`git`（系统命令），无需第三方 Python 库。
