@@ -14,7 +14,7 @@ AstrBot 插件：通过 `/DW` 指令下载文件或克隆 GitHub 仓库，并经
 
 - 支持下载任意可下载文件（优先使用 `curl`）
 - 支持克隆 GitHub 仓库并自动压缩为 `.zip`（压缩后删除原文件夹）
-- 文件小于 50MB 时直接发送文件给用户；大于等于 50MB 时发送国内下载地址
+- 文件小于阈值（默认 50MB，可在插件配置中调整）时直接发送文件给用户；达到阈值时发送国内下载地址
 - 每次下载前自动清理下载目录中停留超过 3 天的文件
 - 下载日志记录到 `data/plugin_data/astrbot_plugin_download_middleman/Downloads.log`（含时间、网址、文件名、大小、是否成功）
 
@@ -38,7 +38,8 @@ AstrBot 插件：通过 `/DW` 指令下载文件或克隆 GitHub 仓库，并经
 | 配置项 | 说明 |
 |---|---|
 | `download_dir` | 下载目录。留空则使用默认目录 `data/plugin_data/astrbot_plugin_download_middleman/DownloadFiles/`；支持绝对路径或相对插件数据目录的路径 |
-| `download_url_prefix` | 大文件（≥50MB）的国内下载地址前缀，例如 `http://example.com/downloads`。留空时，大文件回退为直接通过 OneBot 发送 |
+| `max_send_size_mb` | 直接发送文件的大小上限（MB），默认 `50`，可在 1–1000 之间调整。小于该值的文件通过 OneBot 直接发送，达到该值的文件改发国内下载地址 |
+| `download_url_prefix` | 大文件的国内下载地址前缀，例如 `http://example.com/downloads`。留空时，达到阈值的大文件回退为直接通过 OneBot 发送 |
 
 ### 配合 Nginx 提供下载
 

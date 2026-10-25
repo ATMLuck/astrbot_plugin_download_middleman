@@ -5,8 +5,19 @@
     "type": "string",
     "default": ""
   },
+  "max_send_size_mb": {
+    "description": "直接发送文件的大小上限（MB）。小于该值的文件通过 Onebot 直接发送，大于等于该值的文件改发国内下载地址",
+    "hint": "默认 50。需要已配置下载网址前缀，否则达到阈值的文件仍会回退 Onebot 发送。",
+    "type": "int",
+    "default": 50,
+    "slider": {
+      "min": 1,
+      "max": 1000,
+      "step": 1
+    }
+  },
   "download_url_prefix": {
-    "description": "文件下载网址前缀，用于拼接大文件（≥50MB）的国内下载地址，例如 http://example.com/downloads",
+    "description": "文件下载网址前缀，用于拼接达到直接发送上限的大文件的国内下载地址，例如 http://example.com/downloads",
     "hint": "留空时，大文件将通过 Onebot 直接发送给用户。",
     "type": "string",
     "default": ""

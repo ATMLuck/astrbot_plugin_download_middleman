@@ -1,7 +1,7 @@
 name: astrbot_plugin_download_middleman # 插件唯一识别名
 display_name: 下载中间商 # 展示名
 desc: 下载中间商：通过 curl 下载文件或克隆 GitHub 仓库并压缩发送。 # 插件描述
-version: v1.0.0 # 插件版本号
+version: v1.1.0 # 插件版本号
 author: ATMLuck # 作者
 support_platforms:
   - aiocqhttp

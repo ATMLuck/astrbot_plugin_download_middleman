@@ -16,7 +16,6 @@ from astrbot.core.utils.astrbot_path import get_astrbot_plugin_data_path
 
 PLUGIN_NAME = "astrbot_plugin_download_middleman"
 
-MAX_SEND_SIZE = 50 * 1024 * 1024  # 超过 50MB 的文件不再走 Onebot 发送
 EXPIRE_DAYS = 3  # 下载目录中文件的保留天数
 
 # GitHub 仓库 URL
@@ -28,7 +27,7 @@ GITHUB_REPO_RE = re.compile(
 _FILENAME_BAD = re.compile(r"[^\w.\-]")
 
 
-@register(PLUGIN_NAME, "ATMLuck", "下载中间商：下载文件或克隆 GitHub 仓库并压缩发送", "1.0.0")
+@register(PLUGIN_NAME, "ATMLuck", "下载中间商：下载文件或克隆 GitHub 仓库并压缩发送", "1.1.0")
 class DownloadMiddleman(Star):
     def __init__(self, context: Context, config: dict | None = None):
         super().__init__(context)
@@ -49,6 +48,14 @@ class DownloadMiddleman(Star):
             d = self.plugin_data_dir / d
         d.mkdir(parents=True, exist_ok=True)
         return d
+
+    def _max_send_size(self) -> int:
+        """直接发送文件的大小上限（字节），取配置 max_send_size_mb，非法时回退 50MB。"""
+        try:
+            mb = int(self.config.get("max_send_size_mb") or 0)
+        except (TypeError, ValueError):
+            mb = 0
+        return mb * 1024 * 1024 if mb > 0 else 50 * 1024 * 1024
 
     # ---------- 指令 ----------
 
@@ -91,14 +98,14 @@ class DownloadMiddleman(Star):
             size = file_path.stat().st_size
             filename = file_path.name
 
-            if size < MAX_SEND_SIZE:
-                # 小于 50MB 直接通过 Onebot 发送文件
+            if size < self._max_send_size():
+                # 小于阈值直接通过 Onebot 发送文件
                 logger.info(f"下载完成 {filename} ({size} B)，通过 Onebot 发送")
                 await event.send(event.plain_result("下载完成，正在发送文件..."))
                 yield await self._file_result(event, file_path)
                 self._log(url, filename, size, True, "通过 Onebot 发送")
             else:
-                # 大于等于 50MB 发送国内下载地址
+                # 大于等于阈值发送国内下载地址
                 prefix = (self.config.get("download_url_prefix") or "").strip()
                 if prefix:
                     logger.info(f"下载完成 {filename} ({size} B)，发送国内下载地址")
